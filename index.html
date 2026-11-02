@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="utf-8">
+<title>IT Školský systém</title>
+<style>
+:root {
+  --pozadi: #f4f6f9;
+  --karta: #ffffff;
+  --primarna: #2b6cb0;
+  --akcent: #3182ce;
+  --nebezpecna: #e53e3e;
+  --uzavreta: #38a166;
+  --text: #1a202c;
+  --hrany: #cbd5e0;
+  --tmava: #2d3748;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--pozadi);
+  color: var(--text);
+}
+header {
+  background: var(--primarna);
+  color: #fff;
+  padding: 18px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header h1 { margin: 0; font-size: 22px; }
+main {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+section {
+  background: var(--karta);
+  border: 1px solid var(--hrany);
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 20px;
+}
+section h2 {
+  margin-top: 0;
+  color: var(--tmava);
+  border-bottom: 2px solid var(--hrany);
+  padding-bottom: 6px;
+}
+form label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid var(--hrany);
+  border-radius: 4px;
+  font-size: 14px;
+}
+form button {
+  background: var(--primarna);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+form button:hover { background: var(--akcent); }
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+  color: #fff;
+}
+.badge-vysoka { background: var(--nebezpecna); }
+.badge-stredna { background: #dd6b20; }
+.badge-nizka { background: #38a166; }
+.badge-nahlaseny { background: #718096; }
+.badge-reseny { background: var(--akcent); }
+.badge-vrieseni { background: var(--uzavreta); }
+.incident {
+  border: 1px solid var(--hrany);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #fafbfc;
+}
+.incident .hlavicka {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.incident .popis { font-size: 14px; color: var(--tmava); }
+.incident .detail { font-size: 12px; color: #718096; margin-top: 4px; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+th, td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid var(--hrany);
+}
+th { background: #edf2f7; }
+.empty { color: #718096; font-style: italic; }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+<header>
+  <h1>IT Školský systém</h1>
+</header>
+
+<main>
+  <section>
+    <h2>Prihlásenie</h2>
+    <form id="prihlas-form">
+      <label>Email
+        <input type="email" id="email" placeholder="ucitel@skola.sk" required>
+      </label>
+      <label>Heslo
+        <input type="password" id="heslo" placeholder="heslo" required>
+      </label>
+      <button type="submit">Prihlásiť sa</button>
+    </form>
+  </section>
+
+  <section id="nahlásit" class="hidden">
+    <h2>Nahlásiť incident</h2>
+    <form id="incident-form">
+      <label>Typ
+        <select id="typ" required>
+          <option value="HW">Hardvér</option>
+          <option value="SW">Softvér</option>
+          <option value="Sieť">Sieť</option>
+          <option value="Iné">Iné</option>
+        </select>
+      </label>
+      <label>Zariadenie
+        <input type="text" id="zarizenie" placeholder="napr. Notebook Dell">
+      </label>
+      <label>Popis
+        <textarea id="popis" rows="3" placeholder="Popis problému" required></textarea>
+      </label>
+      <label>Priorita
+        <select id="priorita" required>
+          <option value="nízka">Nízka</option>
+          <option value="stredná">Stredná</option>
+          <option value="vysoká">Vysoká</option>
+        </select>
+      </label>
+      <button type="submit">Odoslať</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Incidenty</h2>
+    <div id="incidenty-list">
+      <p class="empty">Žiadne incidenty.</p>
+    </div>
+  </section>
+
+  <section id="vykaz" class="hidden">
+    <h2>Vykaz času</h2>
+    <form id="vykaz-form">
+      <label>Incident
+        <select id="vykaz-incident" required></select>
+      </label>
+      <label>Trvanie (minúty)
+        <input type="number" id="vykaz-trvanie" min="1" required>
+      </label>
+      <label>Popis
+        <input type="text" id="vykaz-popis" required>
+      </label>
+      <button type="submit">Vykázať</button>
+    </form>
+  </section>
+
+  <section id="zmena-stavu" class="hidden">
+    <h2>Zmeniť stav</h2>
+    <form id="stav-form">
+      <label>Incident
+        <select id="stav-incident" required></select>
+      </label>
+      <label>Nový stav
+        <select id="stav-novy" required>
+          <option value="V riešení">V riešení</option>
+          <option value="Vyriešený">Vyriešený</option>
+        </select>
+      </label>
+      <label>Riešenie
+        <input type="text" id="stav-riesenie" placeholder="popis riešenia">
+      </label>
+      <button type="submit">Uložiť</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Používatelia</h2>
+    <table>
+      <thead>
+        <tr><th>Meno</th><th>Email</th><th>Rola</th></tr>
+      </thead>
+      <tbody id="pouzivatelia-body">
+        <tr><td colspan="3" class="empty">Žiadni používatelia.</td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+</body>
+</html>
