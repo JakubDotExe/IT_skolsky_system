@@ -1,2 +1,11 @@
 
+*.db
+skolsky_system.db
+*.sqlite3
+
+
+__pycache__/
+*.py[cod]
+
+
 poznamky/

@@ -1,7 +1,6 @@
+import os
 import sqlite3
-
-
-DB_NAME = "skolsky_system.db"
+from backend import DB_NAME, vytvor_tabulky
 
 
 def connect():
@@ -9,6 +8,7 @@ def connect():
 
 
 def delete_all():
+    vytvor_tabulky()
     conn = connect()
     conn.execute("DELETE FROM casove_zaznamy")
     conn.execute("DELETE FROM incidenty")
@@ -19,6 +19,7 @@ def delete_all():
 
 
 def reset_to_default():
+    vytvor_tabulky()
     delete_all()
     conn = connect()
     users = [
@@ -43,10 +44,20 @@ def reset_to_default():
     conn.close()
 
 
+def create_new_db(with_default_data=True):
+    if os.path.exists(DB_NAME):
+        os.remove(DB_NAME)
+    vytvor_tabulky()
+    if with_default_data:
+        reset_to_default()
+
+
 def main():
     print("DATABASE DATA")
     print("1 - Reset all data to default")
     print("2 - Delete all data")
+    print("3 - Recreate database from scratch (with default data)")
+    print("4 - Recreate empty database from scratch")
     choice = input("Choose: ").strip()
 
     if choice == "1":
@@ -55,6 +66,14 @@ def main():
     elif choice == "2":
         delete_all()
         print("All data was deleted.")
+    elif choice == "3":
+        create_new_db(with_default_data=True)
+        print("Database recreated with default data.")
+    elif choice == "4":
+        create_new_db(with_default_data=False)
+        print("Empty database created.")
+    else:
+        print("Invalid choice.")
 
 
 if __name__ == "__main__":
